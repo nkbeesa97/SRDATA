@@ -13,7 +13,7 @@
 --  ----------    ------------       -------       --------------------------------
 --  16-Jun-2021   Priscilla T.       1.0           SRDATA-15610: Initial Version sql
 --  15-Aug-2021   Priscilla T.       2.0           Add Trim to Customer Number for client list
---  29-Nov-2021   Nanda Kumar B      3.0           Added logic for column IMPRESSION_CONTRIBUTION
+--  29-Nov-2021   Nanda Kumar B      3.0           SRDATA-16747: Added logic for column IMPRESSION_CONTRIBUTION
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
 !set variable_substitution=true;
