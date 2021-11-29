@@ -13,6 +13,7 @@
 --  ----------    ------------       -------       --------------------------------
 --  16-Jun-2021   Priscilla T.       1.0           SRDATA-15610: Initial Version sql
 --  15-Aug-2021   Priscilla T.       2.0           Add Trim to Customer Number for client list
+--  29-Nov-2021   Nanda Kumar B      3.0           Added logic for column IMPRESSION_CONTRIBUTION
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
 !set variable_substitution=true;
@@ -77,6 +78,7 @@ CREATE OR REPLACE TEMPORARY TABLE LINEAR AS (
             , F.UTC_OFFST_NUM AS UTC_OFFSET
             , A.AD_EVNT_START_TS AS VIEWERSHIP_START_TS_UTC
             , A.CUST_KEY AS CUST_KEY
+            , TIMESTAMPDIFF(second,A.AD_TUNING_EVNT_START_TS,A.AD_TUNING_EVNT_END_TS)/A.SPOT_LGTH as IMPRESSION_CONTRIBUTION
     FROM &{SF_DATABASE}.&{TD_DATABASE_AM_BI}."AM_PROGRAM_AD_TUNING_EVENT_FACT" A
     JOIN TMP_CLIENT_LIST C_LIST
         ON C_LIST.CUSTOMER_KEY = A.CUST_KEY
@@ -295,6 +297,7 @@ INSERT INTO &{SF_DATABASE}.&{TD_DATABASE_AM_XTR}."AM_TV_SQUARED_EXTRACT_SPOT"
         , &{V_SEQ_NBR}
         , CURRENT_DATE()
         , CURRENT_TIMESTAMP()
+        , IMPRESSION_CONTRIBUTION
     FROM LINEAR;
 
 --STREAMING
@@ -317,4 +320,5 @@ INSERT INTO &{SF_DATABASE}.&{TD_DATABASE_AM_XTR}."AM_TV_SQUARED_EXTRACT_SPOT"
         , &{V_SEQ_NBR}
         , CURRENT_DATE()
         , CURRENT_TIMESTAMP()
+        , 1 as IMPRESSION_CONTRIBUTION
     FROM STREAM_FINAL;
